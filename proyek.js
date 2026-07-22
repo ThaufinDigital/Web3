@@ -1,38 +1,24 @@
-// Ambil elemen dari HTML
-const btnVerifikasi = document.getElementById('btnVerifikasi');
-const btnJoinDiscord = document.getElementById('btnJoinDiscord');
-const txtStatus = document.getElementById('txtStatus');
-
-let isVerified = false;
-
-// Event ketika tombol verifikasi diklik
-btnVerifikasi.addEventListener('click', () => {
-    if (!isVerified) {
-        // Bikin efek loading pura-pura biar keren
-        txtStatus.innerText = 'MEMERIKSA SISTEM...';
-        btnVerifikasi.innerText = '[ MEMPROSES... ]';
+document.addEventListener('DOMContentLoaded', () => {
+    const card = document.getElementById('tiltCard');
+    
+    // Logika untuk efek 3D Tilt saat mouse bergerak di area layar
+    document.addEventListener('mousemove', (e) => {
+        // Menghitung kordinat mouse dari tengah layar
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
         
-        // Jeda waktu 1.5 detik sebelum selesai loading
-        setTimeout(() => {
-            isVerified = true;
-            
-            // Ubah teks setelah sukses
-            txtStatus.innerText = 'AKSES DITERIMA. SILAKAN MASUK.';
-            txtStatus.style.color = '#3ba55c'; // Warna hijau
-            
-            btnVerifikasi.innerText = '[ TERVERIFIKASI ]';
-            btnVerifikasi.style.background = '#5865F2';
-            btnVerifikasi.style.color = 'white';
+        // Menerapkan rotasi pada kartu
+        card.style.transform = rotateY(${xAxis}deg) rotateX(${yAxis}deg);
+    });
 
-            // Munculkan tombol masuk Discord
-            btnJoinDiscord.style.display = 'block';
-            
-        }, 1500); // 1500 milidetik = 1.5 detik
-    }
-});
-
-// Event ketika tombol Discord diklik
-btnJoinDiscord.addEventListener('click', () => {
-    // Ganti tulisan di dalam tanda kutip dengan link server Discord kamu
-    window.open("https://discord.gg/link-server-kamu", "_blank");
+    // Mengembalikan kartu ke posisi datar saat mouse meninggalkan jendela browser
+    document.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.5s ease';
+        card.style.transform = rotateY(0deg) rotateX(0deg);
+    });
+    
+    // Menghapus transisi saat mouse masuk kembali agar pergerakan responsif
+    document.addEventListener('mouseenter', () => {
+        card.style.transition = 'none';
+    });
 });
